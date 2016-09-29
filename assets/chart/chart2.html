@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<title>ichartjs 示例</title>
+		<script type="text/javascript" src="./ichart.1.2.min.js"></script>
+		<script type="text/javascript">
+					$(function(){
+						var pv=[],ip=[],t;
+						for(var i=0;i<6;i++){
+							t = Math.floor(Math.random()*(30+((i%12)*5)))+10;
+							pv.push(t);
+							t = Math.floor(t*0.5);
+							t = t-Math.floor((Math.random()*t)/2);
+							ip.push(t);
+						}
+						
+						var data = [
+						         	{
+						         		name : '色带1',//显示这个折现是什么名字
+						         		value:pv,//纵坐标值
+						         		color:'#0d8ecf',
+						         		line_width:2
+						         	},
+						         	{
+						         		name : '色带2',//显示这个折现是什么名字
+						         		value:ip,//纵坐标值
+						         		color:'#0d8ecf',
+						         		line_width:2
+						         	}
+						         ];
+								 //如果多条线，在data中加入
+								 /*
+								 {
+						         		name : '色带2',//显示这个折现是什么名字
+						         		value:ip,//纵坐标值
+						         		color:'#0d8ecf',
+						         		line_width:2
+						         	}
+								 
+								 */
+				         
+						 
+						var labels = ["00","01","02","03","04","05"];//横坐标值
+
+						//下面这些不用动
+						var line = new iChart.LineBasic2D({
+							render : 'canvasDiv',
+							data: data,
+							align:'center',
+							title : 'ichartjs官方网站最近5天流量趋势',//一级标题
+							subtitle : '平均每个人访问2-3个页面(访问量单位：万)',//耳机标题
+							footnote : '数据来源：模拟数据',//最下面的标题
+							width : 400,//最外面框的宽度
+							height : 400,//最外面框的高度
+							tip:{
+								enable:false,//禁用提示
+								shadow:false
+							},
+							legend : {//最上面提示是什么线
+								enable : true,
+								row:1,//设置在一行上显示，与column配合使用
+								column : 'max',
+								valign:'top',
+								sign:'bar',
+								background_color:null,//设置透明背景
+								offsetx:-80,//设置x轴偏移，满足位置需要
+								border : true
+							},
+							crosshair:{
+								enable:false,//禁用十字线
+								line_color:'#62bce9'
+							},
+							sub_option : {
+								label:false,
+								point_hollow : false
+							},
+							coordinate:{
+								width:300,
+								height:240,
+								axis:{
+									color:'#9f9f9f',
+									width:[0,0,2,2]
+								},
+								grids:{
+									vertical:{
+										way:'share_alike',
+								 		value:5
+									}
+								},
+								scale:[{
+									 position:'left',	
+									 start_scale:0,
+									 end_scale:100,
+									 scale_space:10,
+									 scale_size:2,
+									 scale_color:'#9f9f9f'
+								},{
+									 position:'bottom',	
+									 labels:labels
+								}]
+							}
+						});
+					
+					//开始画图
+					line.draw();
+				});
+				
+			</script>
+		</head>
+		<body>
+			<div id='canvasDiv'></div>
+		</body>
+</html>

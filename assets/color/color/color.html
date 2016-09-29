@@ -1,0 +1,143 @@
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+	<title>Color Picker</title>
+<script type="text/javascript" src="jquery.min.js"></script>
+<script type="text/javascript">
+
+var configColorArea = {
+    minX: 1,
+    maxX: 209,
+    minY: 1,
+    maxY: 119
+};
+
+
+function changeRGB(R,G,B){
+	var k = parseInt(R),
+	j = parseInt(G),
+	h = parseInt(B),
+	i;
+	if (isNaN(k) || k > 255 || k < 0) {
+		R = 255
+	} 
+	if (isNaN(j) || j > 255 || j < 0) {
+		G = 255
+	} 
+	if (isNaN(h) || h > 255 || h < 0) {
+		B = 255
+	} 
+	i = rgb2hsl(R / 255, G / 255, B / 255);
+	var hue = Math.round(i.h);
+	var sat = Math.round(i.s * 100);
+	var lum = Math.round(i.l * 100);
+	refreshCoordinatesByHSL(hue, sat, lum);
+}
+
+
+function rgb2hsl(j, i, d){
+	var h, f, c;
+	var a = Math.max(j, i, d),
+	e = Math.min(j, i, d);
+	c = 0.5 * (a + e);
+	if (a == e) {
+		h = 0
+	} else {
+		if (a == j) {
+			h = 60 * (i - d) / (a - e);
+			if (i < d) {
+				h += 360
+			}
+		} else {
+			if (a == i) {
+				h = 60 * (d - j) / (a - e) + 120
+			} else {
+				h = 60 * (j - i) / (a - e) + 240
+			}
+		}
+	}
+	if (c == 0 || a == e) {
+		f = 0
+	} else {
+		if (c <= 0.5) {
+			f = 0.5 * (a - e) / c
+		} else {
+			f = 0.5 * (a - e) / (1 - c)
+		}
+	}
+	return {
+		h: h,
+		s: f,
+		l: c
+	}
+}
+
+
+function refreshCoordinatesByHSL(f, e, b){
+    a = Math.round((configColorArea.maxX - configColorArea.minX) * f / 359) + configColorArea.minX;
+    d = Math.round((configColorArea.maxY - configColorArea.minY) * (100 - b) / 100) + configColorArea.minY;
+    c = Math.round((configColorArea.maxY - configColorArea.minY) * (100 - e) / 100) + configColorArea.minY;
+    setColorAreaXY(a, d);
+}
+
+
+function setColorAreaXY(a, c){
+
+    var b = configColorArea;
+    a = parseInt(a);
+    var x=0;
+    var y=0;
+    if (b.minX > a) {
+        x = b.minX
+    } else {
+        if (a > b.maxX) {
+            x = b.maxX
+        } else {
+            if (!isNaN(a)) {
+                x = a
+            }
+        }
+    }
+    c = parseInt(c);
+    if (b.minY > c) {
+        y = b.minY
+    } else {
+        if (c > b.maxY) {
+            y = b.maxY
+        } else {
+            if (!isNaN(c)) {
+                y = c
+            }
+        }
+    }
+    refreshPosition(x,y)
+}
+
+
+function refreshPosition(x,y){
+
+//定义一个点的css样式
+var innerHTML="<div style='position: absolute; top: "+y+"px; left: "+x+"px; height: 20px; width: 20px;'><div style='position: absolute; width: 4px; height: 20px; left: 8px; top: 0px; background: rgb(255, 255, 255);'></div><div style='position: absolute; height: 4px; width: 20px; top: 8px; left: 0px; background: rgb(255, 255, 255);'></div><div style='position: absolute; height: 18px; width: 2px; left: 9px; top: 1px; background: rgb(76, 76, 76);'></div><div style='position: absolute; width: 18px; height: 2px; top: 9px; left: 1px; background: rgb(76, 76, 76);'></div></div>";
+
+$("#positions").append(innerHTML);
+
+}
+
+$(function(){
+changeRGB(54, 87, 171);
+changeRGB(115, 211, 139);
+/*changeRGB(228, 185, 170);
+changeRGB(228, 170, 187); */
+})
+
+</script>
+</head>
+<body>
+	<!--top: 118px;left: 200px;position: absolute;width: 210px;height: 120px;-->
+	<div id="positions" style="position: absolute;width: 210px;height: 120px;">
+	<div style="position: absolute;width: 210px;height: 120px;background-image: url('shiseqi.png');background-repeat: no-repeat;cursor: pointer;float: left;">
+	</din>
+	</div>
+	
+
+</body>
+</html>
